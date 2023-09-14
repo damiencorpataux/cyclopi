@@ -1,0 +1,3 @@
+[submodule "external/micropython-microio"]
+	path = external/micropython-microio
+	url = git@bitbucket.org:damiencorpataux/micropython-microio.git

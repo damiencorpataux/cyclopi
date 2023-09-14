@@ -1,0 +1,47 @@
+packages:
+  base:
+    files:
+      - lib/microio/**
+      # - [device/asset/microio.js, asset/microio.js]
+      # - [device/asset/*, asset/]  # FIXME: fix & merge branch release-0.0.2 of microdeploy
+    ignore:
+      - .pyc$
+
+  sandbox_ble:
+    files:
+      - [external/micropython-microio/sandbox/bluetooth-javascript/main-peripheral-aioble.py, main.py]
+      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/__init__.py, aioble/__init__.py]
+      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/central.py, aioble/central.py]
+      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/client.py, aioble/client.py]
+      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/core.py, aioble/core.py]
+      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/device.py, aioble/device.py]
+      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/l2cap.py, aioble/l2cap.py]
+      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/peripheral.py, aioble/peripheral.py]
+      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/security.py, aioble/security.py]
+      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/server.py, aioble/server.py]
+    mpy:
+      true
+
+  headlights:
+    files:
+      - [cyclopi/headlights.py, main.py]
+      - [cyclopi/config.py, config.py]
+      - [cyclopi/headlights.html, headlights.html]
+      - [lib/lis3dh.py, lib/lis3dh.py]
+    include:
+      - base
+    # mpy: ['-march=xtensawin'] #, '-X', 'emit=native']
+    mpy:
+      true
+
+## FIXME: TODO: implement this in microdeploy ?
+# packages_templated:  # usage: push device:<name>  - eg. `microdeploy package push device:historifrise`
+#   device:
+#     template: base
+#     named:
+#       files:
+#         - [device/{name}.py, main.py]
+
+device:
+  port: /dev/ttyUSB0
+  # baudrate: 115200
