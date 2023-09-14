@@ -58,7 +58,7 @@ symbols = {
 # }
 matrices = {
     'circle': microio.animatrix.Matrix(
-        values=[(255,255,255)] * C_leds_circle,
+        values=[(10,10,10)] * C_leds_circle,
         output=output_pixels(offset=C_leds_square),
         blend=microio.animatrix.blend.iterative(microio.animatrix.blend.add, lower=0, upper=255),
         fx=[
@@ -86,7 +86,7 @@ matrices = {
                         # *(((0,0,0),) * C_leds_circle,) * 1))),
         ]),
     'square': microio.animatrix.Matrix(
-        values=[(255,255,255)] * C_leds_square,
+        values=[(10,10,10)] * C_leds_square,
         output=output_pixels(offset=0, map_pixel=microio.io.neopixel.map2D(5, 5, [[(0,'north')]])),
         blend=microio.animatrix.blend.iterative(microio.animatrix.blend.add, lower=0, upper=255),
         fx=[
@@ -207,6 +207,9 @@ def display_ip(wlan):
         control.handle_request(json.dumps({"fx":{"square.symbol.mod-Step": {"factor": original_speed}}}))
     loop.create_task(inner())
 
+iomap['pixels'].fill((10,10,10))
+iomap['pixels'].write()
+
 anima = microio.animatrix.Anima(matrices, fps=20)
 anima_log = microio.animatrix.AnimaLog(anima, fps=1)
 control = microio.animatrix.control.Control(anima)
@@ -223,14 +226,15 @@ http = microio.http.factory(
             error_handler=control.handle_error)))
 
 loop = microio.asyncio.get_event_loop()
-loop.create_task(anima.start())
-loop.create_task(anima_log.start())
-loop.create_task(http.start())
 loop.create_task(microio.wifi.station.start_multi(
     configs=getattr(config, 'wifi', []),
     rescan=False,
     on_connected=display_ip))
+loop.create_task(anima.start())
+loop.create_task(anima_log.start())
+loop.create_task(http.start())
 
 brake = BrakeDetection(iomap['acceleration'])
 loop.create_task(brake.start())
+
 loop.run_forever()
