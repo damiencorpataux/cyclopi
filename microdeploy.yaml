@@ -9,16 +9,26 @@ packages:
 
   sandbox_ble:
     files:
-      - [external/micropython-microio/sandbox/bluetooth-javascript/main-peripheral-aioble.py, main.py]
-      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/__init__.py, aioble/__init__.py]
-      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/central.py, aioble/central.py]
-      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/client.py, aioble/client.py]
-      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/core.py, aioble/core.py]
-      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/device.py, aioble/device.py]
-      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/l2cap.py, aioble/l2cap.py]
-      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/peripheral.py, aioble/peripheral.py]
-      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/security.py, aioble/security.py]
-      - [external/micropython-microio/sandbox/bluetooth-javascript/aioble/server.py, aioble/server.py]
+      - [sandbox/bluetooth-javascript/main-peripheral-aioble.py, main.py]
+      - [sandbox/bluetooth-javascript/aioble/__init__.py, aioble/__init__.py]
+      - [sandbox/bluetooth-javascript/aioble/central.py, aioble/central.py]
+      - [sandbox/bluetooth-javascript/aioble/client.py, aioble/client.py]
+      - [sandbox/bluetooth-javascript/aioble/core.py, aioble/core.py]
+      - [sandbox/bluetooth-javascript/aioble/device.py, aioble/device.py]
+      - [sandbox/bluetooth-javascript/aioble/l2cap.py, aioble/l2cap.py]
+      - [sandbox/bluetooth-javascript/aioble/peripheral.py, aioble/peripheral.py]
+      - [sandbox/bluetooth-javascript/aioble/security.py, aioble/security.py]
+      - [sandbox/bluetooth-javascript/aioble/server.py, aioble/server.py]
+    mpy:
+      true
+
+  sandbox_accelerometer:
+    files:
+      - [sandbox/accelerometer-viewer/main.py, main.py]
+      - [sandbox/accelerometer-viewer/config.py, config.py]
+      - [sandbox/accelerometer-viewer/index.html, index.html]
+      - [sandbox/accelerometer-viewer/lis3dh.py, lis3dh.py]
+      - [sandbox/accelerometer-viewer/aioweb.py, aioweb.py]
     mpy:
       true
 

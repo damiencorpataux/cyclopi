@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Line Plot</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>3D Line Plot</h1>
+    <div id="plotly-graph"></div>
+
+    <script>
+        // Parse the URL query parameters to get the WebSocket URL
+        const queryParams = new URLSearchParams(location.search);
+        const url = queryParams.get("url") || 'ws://192.168.130.68/ws';
+
+        // Create a Plotly trace
+        const trace = {
+            type: 'scatter3d',
+            mode: 'lines',
+            x: [],
+            y: [],
+            z: [],
+            opacity: 1,
+            line: {
+                width: 6,
+                color: [],
+                reversescale: false
+            }
+        };
+
+        // Define the layout
+        const layout = {
+            scene: {
+                xaxis: {
+                    title: 'X Axis',
+                    range: [-2, 2] // Define fixed range for x axis
+                },
+                yaxis: {
+                    title: 'Y Axis',
+                    range: [-2, 2] // Define fixed range for y axis
+                },
+                zaxis: {
+                    title: 'Z Axis',
+                    range: [-2, 2] // Define fixed range for z axis
+                },
+            },
+        }
+
+        addEventListener("DOMContentLoaded", (event) => {
+            // Create an initial Plotly plot
+            const graphElement = document.getElementById('plotly-graph');
+            Plotly.newPlot(graphElement, [trace], layout);
+
+            // Connect to WebSocket server
+            const ws = new WebSocket(url);
+
+            // Event handler for WebSocket messages
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+
+                // Extract x, y, z, and color values
+                const [x, y, z] = data;
+
+                // Update the Plotly trace
+                Plotly.update(graphElement, { x: [[0, x]], y: [[0, y]], z: [[0, z]], 'line.color': [0, 0] }, null);
+            };
+
+            ws.onclose = function(event) {
+                if (event.wasClean) {
+                    console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
+                } else {
+                    console.error("Connection died");
+                }
+            };
+
+            ws.onerror = function(error) {
+                console.error(`WebSocket Error: ${error.message}`);
+            };
+        });
+
+    </script>
+</body>
+</html>
