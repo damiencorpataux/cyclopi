@@ -11,7 +11,7 @@ $fn = 120;
 
 margin = 0.2;
 inner_diameter = 72 + margin;  // LED Ring width = 72.00
-croptop_border = 1;
+croptop_border = 3;
 croptop_height = 1.5;
 
 connector_module_width = 9.9;
@@ -47,7 +47,7 @@ module Case(
     diameter = inner_diameter,  // inner diameter
     border = case_border,
     croptop_border = croptop_border,
-    croptop_height = croptop_border,
+    croptop_height = croptop_height,
     plughole_width = connector_module_width - margin,
     plughole_height = case_plughole_height,
     strapholder_height = strapholder_height,
@@ -93,6 +93,14 @@ module Case(
                     center = true);
             }
         }
+        translate([diameter/2, 0, height-screw_height]) {
+            rotate([0, 90, 0]) {
+                #cylinder(
+                    h = border*2,
+                    d = screw_diameter,
+                    center = true);
+            }
+        }
     }
     Drop(
          height = height,
@@ -111,9 +119,10 @@ module Base(
     height = base_height,
     screw_height = screw_height,
     screw_diameter = screw_diameter,
+    pad_width = 23,
     plughole_width = connector_module_width,
     plughole_height = base_plughole_height,
-    strapholder_depth = strapholder_depth,
+    strapholder_depth = 4,
     strapholder_height = base_plughole_height-3,
     strapholder_offset = 2
 ) {
@@ -133,12 +142,20 @@ module Base(
                 }
             }
             // Screw pad
-            translate([diameter/2-border, -screw_diameter, 0]) {
-                cube([border, screw_diameter*2, screw_diameter*2.25]);
+            translate([diameter/2-border-2, -pad_width/2, 0]) {
+                cube([border, pad_width, screw_diameter*2.25]);
+            }
+            translate([-diameter/2+2, -pad_width/2, 0]) {
+                cube([border, pad_width, screw_diameter*2.25]);
             }
             // Connector hole (filler), FIXME: make it round using intersection()
             translate([-plughole_width/2, -diameter/2-strapholder_offset, 0]) {
                 cube([plughole_width, border+strapholder_offset, plughole_height]);
+            }
+            // Padding to protoboard
+            padding_protoboard = 5;
+            translate([-padding_protoboard/2, -padding_protoboard-inner_diameter/2+8, 0]) {
+                cube([padding_protoboard, padding_protoboard, case_height-height_to_protoboard]);
             }
             // Strap holder
             translate([-plughole_width/2, -diameter/2-strapholder_depth-strapholder_offset, 0]) {
@@ -158,6 +175,28 @@ module Base(
                     d = screw_diameter,
                     center = true);
             }
+        }
+        translate([-diameter/2+border, 0, screw_height]) {
+            rotate([0, 90, 0]) {
+                #cylinder(
+                    h = border*2,
+                    d = screw_diameter,
+                    center = true);
+            }
+        }
+        // Strap holes (horizontal)
+        translate([-strapholder_height/2, -strapholder_depth/2-10, -height/2]) {
+            #cube([strapholder_height, strapholder_depth, height*2]);
+        }
+        translate([-strapholder_height/2, -strapholder_depth/2+10, -height/2]) {
+            #cube([strapholder_height, strapholder_depth, height*2]);
+        }
+        // Strap holes (vertical)
+        translate([-strapholder_depth/2-15, -strapholder_height/2, -height/2]) {
+            #cube([strapholder_depth, strapholder_height, height*2]);
+        }
+        translate([-strapholder_depth/2+15, -strapholder_height/2, -height/2]) {
+            #cube([strapholder_depth, strapholder_height, height*2]);
         }
     }    
 }
